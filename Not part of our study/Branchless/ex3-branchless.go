@@ -25,13 +25,12 @@ func Ex3Branchless() {
 	for i := 1; i < array_size; i++ {
 
 		// check whether the current sum greater that the current value ...
-		checkCurrent := ((arr[i] - (current_sum+arr[i])) >> 63)
+		checkCurrent := ((-current_sum) >> 63)
 		// no true and current sum is smaller than the current value then make a fresh start...
 		current_sum = (arr[i] &^ checkCurrent) | (current_sum & checkCurrent) 
 		temp_start = (i &^ checkCurrent) | (temp_start & checkCurrent)
 		// if true then update current sum
-		current_sum += (arr[i] & checkCurrent) | 0
-
+		current_sum += (arr[i] & checkCurrent)
 		// update max sum with new maximum value...
 		checkMax := ((current_sum - max_sum) >> 63)
 		max_sum = (current_sum &^ checkMax) | (max_sum & checkMax)
